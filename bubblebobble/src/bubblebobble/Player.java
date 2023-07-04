@@ -25,15 +25,16 @@ public class Player extends JLabel implements Moveable {
 	public Player() {
 		initObject();
 		initSetting();
+		initBackgroundService();
 	}
-	
+
 	private void initObject() {
 		playerR = new ImageIcon("image/playerR.png");
 		playerL = new ImageIcon("image/playerL.png");
 	}
 	
 	private void initSetting() {
-		x = 55;
+		x = 60;
 		y = 535;
 		
 		setIcon(playerR);
@@ -41,6 +42,12 @@ public class Player extends JLabel implements Moveable {
 		setLocation(x, y);
 	}
 
+	
+	private void initBackgroundService() {
+		new Thread(new BackgroundMap(this)).start();
+	}
+
+	
 	@Override
 	public void left() {
 		setIcon(playerL);
@@ -82,7 +89,6 @@ public class Player extends JLabel implements Moveable {
 	    }
 	    upInProgress = true;
 	    up = true;
-	    System.out.println("up");
 	    new Thread(() -> {
 	        synchronized (this) {
 	            for (int i = 0; i < 130; i++) {
@@ -104,7 +110,6 @@ public class Player extends JLabel implements Moveable {
 	@Override
 	public void down() {
 		down = true;
-		System.out.println("down");
 		new Thread(() -> {
 			for(int i = 0; i < 130; i++) {
 				try {
