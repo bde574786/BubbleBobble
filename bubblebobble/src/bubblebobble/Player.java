@@ -20,6 +20,9 @@ public class Player extends JLabel implements Moveable {
 	private boolean up;
 	private boolean down;
 	
+	private boolean leftWallCrash;
+	private boolean rightWallCrash;
+	
 	private boolean upInProgress = false;
 	
 	public Player() {
@@ -36,6 +39,14 @@ public class Player extends JLabel implements Moveable {
 	private void initSetting() {
 		x = 60;
 		y = 535;
+		
+		left = false;
+		right = false;
+		up = false;
+		down = false;
+		
+		leftWallCrash = false;
+		rightWallCrash = false;
 		
 		setIcon(playerR);
 		setSize(50, 50);

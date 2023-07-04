@@ -24,16 +24,23 @@ public class BackgroundMap implements Runnable {
 	@Override
 	public void run() {
 		while(true) {
-			Color leftColor = new Color(image.getRGB(player.getX() - 10, player.getY() + 25));
-			Color rightColor = new Color(image.getRGB(player.getX() + 60, player.getY() + 25));
+			Color leftColor = new Color(image.getRGB(player.getX() - 5, player.getY() + 25));
+			Color rightColor = new Color(image.getRGB(player.getX() + 65, player.getY() + 25));
+			
 			if(leftColor.getRed() == 255 && leftColor.getGreen() == 0 && leftColor.getBlue() == 0) {
-				System.out.println("왼쪽 벽 충돌");
+				player.setLeftWallCrash(true);
+				player.setLeft(false);
 			} else if(rightColor.getRed() == 255 && rightColor.getGreen() == 0 && rightColor.getBlue() == 0) {
-				System.out.println("오른쪽 벽 충돌");
+				player.setRightWallCrash(true);
+				player.setRight(false);
+			} else {
+				player.setLeftWallCrash(false);
+				player.setRightWallCrash(false);
 			}
 			
-			try {
-				Thread.sleep(10);
+			
+			try { 
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
