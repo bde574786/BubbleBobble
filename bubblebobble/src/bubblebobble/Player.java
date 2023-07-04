@@ -75,14 +75,42 @@ public class Player extends JLabel implements Moveable {
 
 	@Override
 	public void up() {
-		y = y - 10;
-		setLocation(x, y);
+		up = true;
+		System.out.println("up");
+		new Thread(() -> {
+			for(int i=0; i < 130; i++) {
+				try {
+					y = y - 1;
+					setLocation(x, y);
+					Thread.sleep(2);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			up = false;
+			down();
+			
+		}).start();
 	}
 
 	@Override
 	public void down() {
-		y = y + 10;
-		setLocation(x, y);
+		down = true;
+		new Thread(() -> {
+			for(int i=0; i < 130; i++) {
+				try {
+					y = y + 1;
+					setLocation(x, y);
+					Thread.sleep(2);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			down = false;
+		}).start();
 	}
 	
 }

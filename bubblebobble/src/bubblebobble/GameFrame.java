@@ -51,7 +51,9 @@ public class GameFrame extends JFrame {
 					}
 					break;
 				case KeyEvent.VK_UP:
-					player.up();
+					if(!player.isUp() && !player.isDown()) {
+						player.up();
+					}
 					break;
 				case KeyEvent.VK_DOWN:
 					player.down();
