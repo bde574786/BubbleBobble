@@ -20,6 +20,8 @@ public class Player extends JLabel implements Moveable {
 	private boolean up;
 	private boolean down;
 	
+	private boolean upInProgress = false;
+	
 	public Player() {
 		initObject();
 		initSetting();
@@ -75,31 +77,36 @@ public class Player extends JLabel implements Moveable {
 
 	@Override
 	public void up() {
-		up = true;
-		System.out.println("up");
-		new Thread(() -> {
-			for(int i=0; i < 130; i++) {
-				try {
-					y = y - 1;
-					setLocation(x, y);
-					Thread.sleep(2);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-			up = false;
-			down();
-			
-		}).start();
+	    if (upInProgress) {
+	        return;
+	    }
+	    upInProgress = true;
+	    up = true;
+	    System.out.println("up");
+	    new Thread(() -> {
+	        synchronized (this) {
+	            for (int i = 0; i < 130; i++) {
+	                try {
+	                    y = y - 1;
+	                    setLocation(x, y);
+	                    Thread.sleep(2);
+	                } catch (InterruptedException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	            up = false;
+	            upInProgress = false;
+	        }
+	        down();
+	    }).start();
 	}
 
 	@Override
 	public void down() {
 		down = true;
+		System.out.println("down");
 		new Thread(() -> {
-			for(int i=0; i < 130; i++) {
+			for(int i = 0; i < 130; i++) {
 				try {
 					y = y + 1;
 					setLocation(x, y);
