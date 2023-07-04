@@ -41,10 +41,14 @@ public class GameFrame extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				switch(e.getKeyCode()) {
 				case KeyEvent.VK_LEFT:
-					player.left();
+					if(!player.isLeft()) {
+						player.left();
+					}
 					break;
 				case KeyEvent.VK_RIGHT:
-					player.right();
+					if(!player.isRight()) {
+						player.right();
+					}
 					break;
 				case KeyEvent.VK_UP:
 					player.up();
@@ -54,7 +58,27 @@ public class GameFrame extends JFrame {
 					break;
 				}
 			}
+			
+		@Override
+		public void keyReleased(KeyEvent e) {
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_LEFT:
+				player.setLeft(false);
+				break;
+			case KeyEvent.VK_RIGHT:
+				player.setRight(false);
+				break;
+			case KeyEvent.VK_UP:
+				player.setUp(false);
+				break;
+			case KeyEvent.VK_DOWN:
+				player.setDown(false);
+				break;
+			}
+		}
 		});
+	
+		
 	}
 	
 	

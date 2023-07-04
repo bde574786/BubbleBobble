@@ -42,15 +42,35 @@ public class Player extends JLabel implements Moveable {
 	@Override
 	public void left() {
 		setIcon(playerL);
-		x = x - 10;
-		setLocation(x, y);
+		left = true;
+		new Thread(() -> {
+			while(left) {
+				try {
+					x = x - 1;
+					setLocation(x, y);
+					Thread.sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
 
 	@Override
 	public void right() {
 		setIcon(playerR);
-		x = x + 10;
-		setLocation(x, y);
+		right = true;
+		new Thread(() -> {
+			while(right) {
+				try {
+					x = x + 1;
+					setLocation(x, y);
+					Thread.sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
 
 	@Override
