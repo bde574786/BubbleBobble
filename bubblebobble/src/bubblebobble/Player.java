@@ -15,6 +15,11 @@ public class Player extends JLabel implements Moveable {
 	private int x;
 	private int y;
 	
+	private boolean left;
+	private boolean right;
+	private boolean up;
+	private boolean down;
+	
 	public Player() {
 		initObject();
 		initSetting();
@@ -36,25 +41,28 @@ public class Player extends JLabel implements Moveable {
 
 	@Override
 	public void left() {
-		
+		setIcon(playerL);
+		x = x - 10;
+		setLocation(x, y);
 	}
 
 	@Override
 	public void right() {
-		// TODO Auto-generated method stub
-		
+		setIcon(playerR);
+		x = x + 10;
+		setLocation(x, y);
 	}
 
 	@Override
 	public void up() {
-		// TODO Auto-generated method stub
-		
+		y = y - 10;
+		setLocation(x, y);
 	}
 
 	@Override
 	public void down() {
-		// TODO Auto-generated method stub
-		
+		y = y + 10;
+		setLocation(x, y);
 	}
 	
 }

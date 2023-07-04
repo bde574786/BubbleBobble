@@ -16,6 +16,7 @@ public class GameFrame extends JFrame {
 	public GameFrame() {
 		initObject();
 		initSetting();
+		initListener();
 		setVisible(true);
 	}
 	
@@ -41,6 +42,15 @@ public class GameFrame extends JFrame {
 				switch(e.getKeyCode()) {
 				case KeyEvent.VK_LEFT:
 					player.left();
+					break;
+				case KeyEvent.VK_RIGHT:
+					player.right();
+					break;
+				case KeyEvent.VK_UP:
+					player.up();
+					break;
+				case KeyEvent.VK_DOWN:
+					player.down();
 					break;
 				}
 			}
