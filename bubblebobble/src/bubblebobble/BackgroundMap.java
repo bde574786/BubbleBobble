@@ -24,8 +24,10 @@ public class BackgroundMap implements Runnable {
 	@Override
 	public void run() {
 		while(true) {
-			Color leftColor = new Color(image.getRGB(player.getX() - 5, player.getY() + 25));
+			Color leftColor = new Color(image.getRGB(player.getX() - 10, player.getY() + 25));
 			Color rightColor = new Color(image.getRGB(player.getX() + 65, player.getY() + 25));
+			
+			int bottomColor = image.getRGB(player.getX() + 10, player.getY() + 55) + image.getRGB(player.getX() + 40, player.getY() + 55);
 			
 			if(leftColor.getRed() == 255 && leftColor.getGreen() == 0 && leftColor.getBlue() == 0) {
 				player.setLeftWallCrash(true);
@@ -36,6 +38,11 @@ public class BackgroundMap implements Runnable {
 			} else {
 				player.setLeftWallCrash(false);
 				player.setRightWallCrash(false);
+			}
+			
+			
+			if(bottomColor != -2) {
+				player.setDown(false);
 			}
 			
 			
