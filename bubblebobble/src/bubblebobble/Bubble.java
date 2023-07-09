@@ -11,7 +11,8 @@ import lombok.Setter;
 public class Bubble extends JLabel implements Moveable {
 
 	private Player player;
-
+	private BackgroundBubble backgroundBubble;
+	
 	private int x;
 	private int y;
 
@@ -39,6 +40,8 @@ public class Bubble extends JLabel implements Moveable {
 		bubble = new ImageIcon("image/bubble.png");
 		bubbled = new ImageIcon("image/bubbled.png");
 		bomb = new ImageIcon("image/bomb.png");
+		
+		backgroundBubble = new BackgroundBubble(this);
 	}
 
 	private void initSetting() {
@@ -72,6 +75,10 @@ public class Bubble extends JLabel implements Moveable {
 			x--;
 			setLocation(x, y);
 			
+			if(backgroundBubble.leftWall()) {
+				break;
+			}
+			
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -88,6 +95,10 @@ public class Bubble extends JLabel implements Moveable {
 			x++;
 			setLocation(x, y);
 			
+			if(backgroundBubble.rightWall()) {
+				break;
+			}
+			
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -103,6 +114,10 @@ public class Bubble extends JLabel implements Moveable {
 		while(up) {
 			y--;
 			setLocation(x, y);
+			
+			if(backgroundBubble.topWall()) {
+				break;
+			}
 			
 			try {
 				Thread.sleep(1);

@@ -24,7 +24,7 @@ public class BackgroundMap implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			Color leftColor = new Color(image.getRGB(player.getX() - 10, player.getY() + 25));
+			Color leftColor = new Color(image.getRGB(player.getX() - 5, player.getY() + 25));
 			Color rightColor = new Color(image.getRGB(player.getX() + 65, player.getY() + 25));
 			int bottomColor = image.getRGB(player.getX() + 10, player.getY() + 50)
 					+ image.getRGB(player.getX() + 40, player.getY() + 50);
