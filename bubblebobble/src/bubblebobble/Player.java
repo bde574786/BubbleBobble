@@ -15,6 +15,8 @@ public class Player extends JLabel implements Moveable {
 	private int x;
 	private int y;
 	
+	private PlayerDirection playerDirection;
+	
 	private boolean left;
 	private boolean right;
 	private boolean up;
@@ -49,6 +51,8 @@ public class Player extends JLabel implements Moveable {
 		leftWallCrash = false;
 		rightWallCrash = false;
 		
+		playerDirection = PlayerDirection.RIGHT;
+		
 		setIcon(playerR);
 		setSize(50, 50);
 		setLocation(x, y);
@@ -62,6 +66,7 @@ public class Player extends JLabel implements Moveable {
 	
 	@Override
 	public void left() {
+		playerDirection = PlayerDirection.LEFT;
 		setIcon(playerL);
 		left = true;
 		new Thread(() -> {
@@ -79,6 +84,7 @@ public class Player extends JLabel implements Moveable {
 
 	@Override
 	public void right() {
+		playerDirection = PlayerDirection.RIGHT;
 		setIcon(playerR);
 		right = true;
 		new Thread(() -> {

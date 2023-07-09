@@ -56,6 +56,7 @@ public class GameFrame extends JFrame {
 					}
 					break;
 				case KeyEvent.VK_SPACE:
+					System.out.println("버블 생성");
 					Bubble bubble = new Bubble(player);
 					add(bubble);
 				}
