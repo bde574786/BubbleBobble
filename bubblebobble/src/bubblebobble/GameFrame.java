@@ -55,9 +55,9 @@ public class GameFrame extends JFrame {
 							player.up();
 					}
 					break;
-				case KeyEvent.VK_DOWN:
-					player.down();
-					break;
+				case KeyEvent.VK_SPACE:
+					Bubble bubble = new Bubble(player);
+					add(bubble);
 				}
 			}
 			
