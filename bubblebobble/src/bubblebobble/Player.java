@@ -22,6 +22,7 @@ public class Player extends JLabel implements Moveable {
 	
 	private boolean leftWallCrash;
 	private boolean rightWallCrash;
+	private boolean jumping;
 	
 	private boolean upInProgress = false;
 	
@@ -102,6 +103,7 @@ public class Player extends JLabel implements Moveable {
 	    up = true;
 	    new Thread(() -> {
 	        synchronized (this) {
+	        	jumping = true;
 	            for (int i = 0; i < 130; i++) {
 	                try {
 	                    y = y - 1;
@@ -113,6 +115,7 @@ public class Player extends JLabel implements Moveable {
 	            }
 	            up = false;
 	            upInProgress = false;
+	            jumping = false;
 	        }
 	        down();
 	    }).start();

@@ -11,7 +11,7 @@ public class BackgroundMap implements Runnable {
 
 	private BufferedImage image;
 	private Player player;
-	
+
 	public BackgroundMap(Player player) {
 		this.player = player;
 		try {
@@ -20,39 +20,39 @@ public class BackgroundMap implements Runnable {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	@Override
 	public void run() {
-		while(true) {
+		while (true) {
 			Color leftColor = new Color(image.getRGB(player.getX() - 10, player.getY() + 25));
 			Color rightColor = new Color(image.getRGB(player.getX() + 65, player.getY() + 25));
-			
-			int bottomColor = image.getRGB(player.getX() + 10, player.getY() + 55) + image.getRGB(player.getX() + 40, player.getY() + 55);
-			
-			if(leftColor.getRed() == 255 && leftColor.getGreen() == 0 && leftColor.getBlue() == 0) {
+			int bottomColor = image.getRGB(player.getX() + 10, player.getY() + 50)
+					+ image.getRGB(player.getX() + 40, player.getY() + 50);
+
+			if (leftColor.getRed() == 255 && leftColor.getGreen() == 0 && leftColor.getBlue() == 0) {
 				player.setLeftWallCrash(true);
 				player.setLeft(false);
-			} else if(rightColor.getRed() == 255 && rightColor.getGreen() == 0 && rightColor.getBlue() == 0) {
+			} else if (rightColor.getRed() == 255 && rightColor.getGreen() == 0 && rightColor.getBlue() == 0) {
 				player.setRightWallCrash(true);
 				player.setRight(false);
 			} else {
 				player.setLeftWallCrash(false);
 				player.setRightWallCrash(false);
 			}
-			
-			
-			if(bottomColor != -2) {
+
+			if (bottomColor != -2) {
 				player.setDown(false);
+			} else {
+				if (!player.isUp() && !player.isDown() && !player.isJumping()) {
+					player.down();
+				}
 			}
-			
-			
-			try { 
+
+			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
-	
 }
