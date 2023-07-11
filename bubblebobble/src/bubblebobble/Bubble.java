@@ -73,7 +73,7 @@ public class Bubble extends JLabel implements Moveable {
 			}
 
 			if ((Math.abs(x - enemy.getX()) > 40 && Math.abs(x - enemy.getX()) < 60) && Math.abs(y - enemy.getY()) > 0
-					&& Math.abs(x - enemy.getX()) < 50) {
+					&& Math.abs(y - enemy.getY()) < 50) {
 				attack();
 			}
 

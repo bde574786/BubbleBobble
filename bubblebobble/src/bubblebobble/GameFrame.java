@@ -15,8 +15,8 @@ public class GameFrame extends JFrame {
 
 	private GameFrame mContext = this;
 	private Player player;
-	private JLabel background;
 	private Enemy enemy;
+	private JLabel background;
 	
 	public GameFrame() {
 		initObject();
