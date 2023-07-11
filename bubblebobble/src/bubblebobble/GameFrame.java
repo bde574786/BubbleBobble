@@ -7,11 +7,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
 public class GameFrame extends JFrame {
 
-	private GameFrame gameFrame;
+	private GameFrame mContext = this;
 	private Player player;
 	private JLabel background;
+	private Enemy enemy;
 	
 	public GameFrame() {
 		initObject();
@@ -19,74 +24,81 @@ public class GameFrame extends JFrame {
 		initListener();
 		setVisible(true);
 	}
-	
+
 	private void initSetting() {
 		setSize(1000, 640);
 		setLayout(null);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
-	
+
 	private void initObject() {
 		background = new JLabel(new ImageIcon("image/background.png"));
 		setContentPane(background);
-		
-		player = new Player();
+
+		player = new Player(mContext);
 		add(player);
+		
+		enemy = new Enemy(mContext);
+		add(enemy);
 	}
-	
+
 	private void initListener() {
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				switch(e.getKeyCode()) {
+				switch (e.getKeyCode()) {
 				case KeyEvent.VK_LEFT:
-					if(!player.isLeft() && !player.isLeftWallCrash()) {
+					if (!player.isLeft() && !player.isLeftWallCrash()) {
 						player.left();
 					}
 					break;
 				case KeyEvent.VK_RIGHT:
-					if(!player.isRight() && !player.isRightWallCrash()) {
+					if (!player.isRight() && !player.isRightWallCrash()) {
 						player.right();
 					}
 					break;
 				case KeyEvent.VK_UP:
-						if(!player.isUp() && !player.isDown()) {
-							player.up();
+					if (!player.isUp() && !player.isDown()) {
+						player.up();
 					}
 					break;
 				case KeyEvent.VK_SPACE:
-					System.out.println("버블 생성");
-					Bubble bubble = new Bubble(player);
-					add(bubble);
+					player.attack();
+					break;
 				}
 			}
-			
-		@Override
-		public void keyReleased(KeyEvent e) {
-			switch (e.getKeyCode()) {
-			case KeyEvent.VK_LEFT:
-				player.setLeft(false);
-				break;
-			case KeyEvent.VK_RIGHT:
-				player.setRight(false);
-				break;
-			case KeyEvent.VK_UP:
-				player.setUp(false);
-				break;
-			case KeyEvent.VK_DOWN:
-				player.setDown(false);
-				break;
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_LEFT:
+					player.setLeft(false);
+					break;
+				case KeyEvent.VK_RIGHT:
+					player.setRight(false);
+					break;
+				case KeyEvent.VK_UP:
+					player.setUp(false);
+					break;
+				case KeyEvent.VK_DOWN:
+					player.setDown(false);
+					break;
+				}
 			}
-		}
 		});
-	
-		
+
 	}
-	
-	
+
 	public static void main(String[] args) {
 		new GameFrame();
 	}
-	
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public Enemy getEnemy() {
+		return enemy;
+	}
 }

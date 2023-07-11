@@ -10,9 +10,11 @@ import lombok.Setter;
 @Setter
 public class Bubble extends JLabel implements Moveable {
 
+	private GameFrame mContext;
 	private Player player;
+	private Enemy enemy;
 	private BackgroundBubble backgroundBubble;
-	
+
 	private int x;
 	private int y;
 
@@ -29,18 +31,18 @@ public class Bubble extends JLabel implements Moveable {
 	private boolean leftWallCrash;
 	private boolean rightWallCrash;
 
-	public Bubble(Player player) {
-		this.player = player;
+	public Bubble(GameFrame mContext) {
+		this.mContext = mContext;
+		this.player = mContext.getPlayer();
+		this.enemy = mContext.getEnemy();
 		initObject();
 		initSetting();
-		initThread();
 	}
 
 	private void initObject() {
 		bubble = new ImageIcon("image/bubble.png");
 		bubbled = new ImageIcon("image/bubbled.png");
 		bomb = new ImageIcon("image/bomb.png");
-		
 		backgroundBubble = new BackgroundBubble(this);
 	}
 
@@ -58,27 +60,23 @@ public class Bubble extends JLabel implements Moveable {
 		state = 0;
 	}
 
-	private void initThread() {
-		new Thread(() -> {
-			if (player.getPlayerDirection() == PlayerDirection.LEFT) {
-				left();
-			} else {
-				right();
-			}
-		}).start();
-	}
-
 	@Override
 	public void left() {
 		left = true;
-		for(int i=0; i < 400; i++) {
+		for (int i = 0; i < 400; i++) {
 			x--;
 			setLocation(x, y);
-			
-			if(backgroundBubble.leftWall()) {
+
+			if (backgroundBubble.leftWall()) {
+				left = false;
 				break;
 			}
-			
+
+			if ((Math.abs(x - enemy.getX()) > 40 && Math.abs(x - enemy.getX()) < 60) && Math.abs(y - enemy.getY()) > 0
+					&& Math.abs(x - enemy.getX()) < 50) {
+				attack();
+			}
+
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -91,14 +89,15 @@ public class Bubble extends JLabel implements Moveable {
 	@Override
 	public void right() {
 		right = true;
-		for(int i=0; i < 400; i++) {
+		for (int i = 0; i < 400; i++) {
 			x++;
 			setLocation(x, y);
-			
-			if(backgroundBubble.rightWall()) {
+
+			if (backgroundBubble.rightWall()) {
+				right = false;
 				break;
 			}
-			
+
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -111,19 +110,40 @@ public class Bubble extends JLabel implements Moveable {
 	@Override
 	public void up() {
 		up = true;
-		while(up) {
+		while (up) {
 			y--;
 			setLocation(x, y);
-			
-			if(backgroundBubble.topWall()) {
+
+			if (backgroundBubble.topWall()) {
+				up = false;
 				break;
 			}
-			
+
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+		clearBubble();
+	}
+
+	@Override
+	public void attack() {
+		state = 1;
+		setIcon(bubbled);
+	}
+	
+	private void clearBubble() {
+		try {
+			Thread.sleep(3000);
+			setIcon(bomb);
+			Thread.sleep(500);
+			mContext.remove(this);
+			mContext.repaint();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

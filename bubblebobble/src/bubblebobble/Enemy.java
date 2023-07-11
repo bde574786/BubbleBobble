@@ -8,16 +8,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Player extends JLabel implements Moveable {
+public class Enemy extends JLabel implements Moveable {
 
 	private GameFrame mContext;
 
-	private ImageIcon playerR, playerL;
+	private ImageIcon enemyR, enemyL;
 
 	private int x;
 	private int y;
 
-	private PlayerDirection playerDirection;
+	private EnemyDirection enemyDirection;
 
 	private boolean left;
 	private boolean right;
@@ -26,25 +26,22 @@ public class Player extends JLabel implements Moveable {
 
 	private boolean leftWallCrash;
 	private boolean rightWallCrash;
-	private boolean jumping;
 
-	private boolean upInProgress = false;
-
-	public Player(GameFrame mContext) {
+	public Enemy(GameFrame mContext) {
 		this.mContext = mContext;
 		initObject();
 		initSetting();
-		initBackgroundPlayerService();
+		initBackgroundEnemyService();
 	}
 
 	private void initObject() {
-		playerR = new ImageIcon("image/playerR.png");
-		playerL = new ImageIcon("image/playerL.png");
+		enemyR = new ImageIcon("image/enemyR.png");
+		enemyL = new ImageIcon("image/enemyL.png");
 	}
 
 	private void initSetting() {
-		x = 60;
-		y = 535;
+		x = 480;
+		y = 178;
 
 		left = false;
 		right = false;
@@ -54,37 +51,23 @@ public class Player extends JLabel implements Moveable {
 		leftWallCrash = false;
 		rightWallCrash = false;
 
-		playerDirection = PlayerDirection.RIGHT;
+		enemyDirection = EnemyDirection.RIGHT;
 
-		setIcon(playerR);
+		setIcon(enemyR);
 		setSize(50, 50);
 		setLocation(x, y);
 	}
 
-	private void initBackgroundPlayerService() {
-		new Thread(new BackgroundMap(this)).start();
-	}
-
-	@Override
-	public void attack() {
-		new Thread(() -> {
-			Bubble bubble = new Bubble(mContext);
-			mContext.add(bubble);
-			if (playerDirection == PlayerDirection.LEFT) {
-				bubble.left();
-			} else {
-				bubble.right();
-			}
-		}).start();
+	private void initBackgroundEnemyService() {
 	}
 
 	@Override
 	public void left() {
-		playerDirection = PlayerDirection.LEFT;
-		setIcon(playerL);
+		enemyDirection = EnemyDirection.LEFT;
 		left = true;
 		new Thread(() -> {
 			while (left) {
+				setIcon(enemyL);
 				try {
 					x = x - 1;
 					setLocation(x, y);
@@ -98,12 +81,12 @@ public class Player extends JLabel implements Moveable {
 
 	@Override
 	public void right() {
-		playerDirection = PlayerDirection.RIGHT;
-		setIcon(playerR);
+		enemyDirection = EnemyDirection.RIGHT;
 		right = true;
 		new Thread(() -> {
 			while (right) {
 				try {
+					setIcon(enemyR);
 					x = x + 1;
 					setLocation(x, y);
 					Thread.sleep(2);
@@ -116,14 +99,9 @@ public class Player extends JLabel implements Moveable {
 
 	@Override
 	public void up() {
-		if (upInProgress) {
-			return;
-		}
-		upInProgress = true;
 		up = true;
 		new Thread(() -> {
 			synchronized (this) {
-				jumping = true;
 				for (int i = 0; i < 130; i++) {
 					try {
 						y = y - 1;
@@ -134,8 +112,6 @@ public class Player extends JLabel implements Moveable {
 					}
 				}
 				up = false;
-				upInProgress = false;
-				jumping = false;
 			}
 			down();
 		}).start();
