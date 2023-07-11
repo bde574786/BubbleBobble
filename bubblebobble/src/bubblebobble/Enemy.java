@@ -24,6 +24,8 @@ public class Enemy extends JLabel implements Moveable {
 	private boolean up;
 	private boolean down;
 
+	private int state;
+	
 	private boolean leftWallCrash;
 	private boolean rightWallCrash;
 
@@ -48,6 +50,8 @@ public class Enemy extends JLabel implements Moveable {
 		up = false;
 		down = false;
 
+		state = 0;
+		
 		leftWallCrash = false;
 		rightWallCrash = false;
 

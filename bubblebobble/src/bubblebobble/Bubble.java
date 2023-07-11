@@ -72,9 +72,12 @@ public class Bubble extends JLabel implements Moveable {
 				break;
 			}
 
-			if ((Math.abs(x - enemy.getX()) > 40 && Math.abs(x - enemy.getX()) < 60) && Math.abs(y - enemy.getY()) > 0
+			if ((Math.abs(x - enemy.getX())  < 10) && Math.abs(y - enemy.getY()) > 0
 					&& Math.abs(y - enemy.getY()) < 50) {
-				attack();
+				if (enemy.getState() == 0) {
+					attack();
+					break;
+				}
 			}
 
 			try {
@@ -96,6 +99,14 @@ public class Bubble extends JLabel implements Moveable {
 			if (backgroundBubble.rightWall()) {
 				right = false;
 				break;
+			}
+
+			if ((Math.abs(x - enemy.getX())  < 10) && Math.abs(y - enemy.getY()) > 0
+					&& Math.abs(y - enemy.getY()) < 50) {
+				if (enemy.getState() == 0) {
+					attack();
+					break;
+				}
 			}
 
 			try {
@@ -120,20 +131,30 @@ public class Bubble extends JLabel implements Moveable {
 			}
 
 			try {
-				Thread.sleep(1);
+				if (state == 0) {
+					Thread.sleep(1);
+				} else {
+					Thread.sleep(6);
+				}
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		clearBubble();
+		if(state == 0) {
+			clearBubble();
+		}
 	}
 
 	@Override
 	public void attack() {
 		state = 1;
+		enemy.setState(1);
 		setIcon(bubbled);
+		mContext.remove(enemy);
+		mContext.repaint();
 	}
-	
+
 	private void clearBubble() {
 		try {
 			Thread.sleep(3000);
