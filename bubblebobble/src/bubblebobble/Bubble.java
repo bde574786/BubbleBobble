@@ -72,9 +72,10 @@ public class Bubble extends JLabel implements Moveable {
 				break;
 			}
 
-			if ((Math.abs(x - enemy.getX())  < 10) && Math.abs(y - enemy.getY()) > 0
+			if ((Math.abs(x - enemy.getX()) < 10) && Math.abs(y - enemy.getY()) > 0
 					&& Math.abs(y - enemy.getY()) < 50) {
 				if (enemy.getState() == 0) {
+					System.out.println("물방울 적군 충돌");
 					attack();
 					break;
 				}
@@ -101,7 +102,7 @@ public class Bubble extends JLabel implements Moveable {
 				break;
 			}
 
-			if ((Math.abs(x - enemy.getX())  < 10) && Math.abs(y - enemy.getY()) > 0
+			if ((Math.abs(x - enemy.getX()) < 10) && Math.abs(y - enemy.getY()) > 0
 					&& Math.abs(y - enemy.getY()) < 50) {
 				if (enemy.getState() == 0) {
 					attack();
@@ -130,6 +131,13 @@ public class Bubble extends JLabel implements Moveable {
 				break;
 			}
 
+			if (Math.abs(x - enemy.getX()) > 10 && Math.abs(x - enemy.getX()) < 45 && Math.abs(y - enemy.getY()) > 0
+					&& Math.abs(y - enemy.getY()) < 50) {
+				if (enemy.getState() == 0) {
+					attack();
+				}
+			}
+
 			try {
 				if (state == 0) {
 					Thread.sleep(1);
@@ -141,7 +149,7 @@ public class Bubble extends JLabel implements Moveable {
 				e.printStackTrace();
 			}
 		}
-		if(state == 0) {
+		if (state == 0) {
 			clearBubble();
 		}
 	}
@@ -163,9 +171,24 @@ public class Bubble extends JLabel implements Moveable {
 			mContext.remove(this);
 			mContext.repaint();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void clearBubbled() {
+		System.out.println("clearBubbled");
+		new Thread(() -> {
+			try {
+				up = false;
+				setIcon(bomb);
+				Thread.sleep(1000);
+				mContext.remove(this);
+				mContext.repaint();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}).start();
+
 	}
 
 }

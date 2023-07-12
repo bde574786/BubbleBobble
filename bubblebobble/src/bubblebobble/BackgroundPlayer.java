@@ -4,16 +4,19 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public class BackgroundMap implements Runnable {
+public class BackgroundPlayer implements Runnable {
 
 	private BufferedImage image;
 	private Player player;
+	private List<Bubble> bubbleList;
 
-	public BackgroundMap(Player player) {
+	public BackgroundPlayer(Player player) {
 		this.player = player;
+		this.bubbleList = player.getBubbleList();
 		try {
 			image = ImageIO.read(new File("image/backgroundMapService.png"));
 		} catch (IOException e) {
@@ -24,6 +27,17 @@ public class BackgroundMap implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
+			for (int i = 0; i < bubbleList.size(); i++) {
+				Bubble bubble = bubbleList.get(i);
+				if (bubble.getState() == 1) {
+					if ((Math.abs(player.getX() - bubble.getX()) < 10) && Math.abs(player.getY() - bubble.getY()) > 0
+							&& Math.abs(player.getY() - bubble.getY()) < 50) {
+						bubble.clearBubbled();
+						break;
+					}
+				}
+			}
+
 			Color leftColor = new Color(image.getRGB(player.getX() - 5, player.getY() + 25));
 			Color rightColor = new Color(image.getRGB(player.getX() + 65, player.getY() + 25));
 			int bottomColor = image.getRGB(player.getX() + 10, player.getY() + 50)
